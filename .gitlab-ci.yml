@@ -49,12 +49,13 @@
 #    - echo "Application successfully deployed."
 
 # Use Maven with Java 21
+
+
 image: maven:3.9.6-eclipse-temurin-21
 
 stages:
   - build
   - test
-  - deploy
 
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end"
@@ -65,12 +66,16 @@ cache:
     - .m2/repository
 
 before_script:
-  - echo "🔧 Starting CI for Java 21 Spring Boot app"
+  - echo "Running with Java:"
+  - java -version
+  - mvn -version
 
 build-job:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS clean package -DskipTests
+    - mvn $MAVEN_CLI_OPTS clean compile
+  only:
+    - develop
   artifacts:
     paths:
       - target/*.jar
@@ -79,13 +84,5 @@ test-job:
   stage: test
   script:
     - mvn $MAVEN_CLI_OPTS test
-
-deploy-job:
-  stage: deploy
-  environment: production
   only:
-    - main
-  script:
-    - echo "🚀 Deploying application..."
-    # Replace this with real deployment steps (scp, docker, etc.)
-    - ls -lh target/*.jar
+    - develop
