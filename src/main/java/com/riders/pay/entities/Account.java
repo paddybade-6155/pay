@@ -29,8 +29,11 @@ public class Account extends Auditable {
     @Column(precision = 15, scale = 2)
     private BigDecimal balance;
 
+    @Column(name = "currency")
     private String currency = "INR";
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private AccountModel.Status status;
 
 }

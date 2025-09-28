@@ -37,12 +37,12 @@ public class PaymentServiceImpl implements PaymentService {
             object = repository.save(account);
 
             if (object != null) {
-                getResponseModel("Registered Successfully!", SUCCESS_CODE, object);
+                responseModel = getResponseModel("Registered Successfully!", SUCCESS_CODE, object);
             } else {
-                getResponseModel( "Registration Fail!", "error while registering vpa.", null);
+                responseModel = getResponseModel( "Registration Fail!", "error while registering vpa.", null);
             }
         } else {
-            getResponseModel( "Registration Fail!", model.getVpa() + " VPA already registered.", null);
+            responseModel = getResponseModel( "Registration Fail!", model.getVpa() + " VPA already registered.", null);
         }
         return new ResponseEntity(responseModel, OK);
     }
